@@ -16,14 +16,18 @@ app = Flask(__name__)
 # Güvenli oturumlar için gizli anahtar
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'varsayilan_gizli_anahtar_123')
 # Veritabanı bağlantı adresi
-db_url = os.environ.get('DATABASE_URL')
-if db_url and db_url.startswith("postgres://"):
-    db_url = db_url.replace("postgres://", "postgresql+pg8000://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # PLC'den gelen veriyi doğrulamak için kullanacağımız API anahtarı
 API_KEY = os.environ.get('API_KEY', 'GuvenliSifrem2025')
 
+db_url = os.environ.get('DATABASE_URL')
+if db_url:
+    if db_url.startswith("postgresql://"):
+        db_url = db_url.replace("postgresql://", "postgresql+pg8000://", 1)
+    elif db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql+pg8000://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 
 # Veritabanı nesnesini ve Login yöneticisini oluşturuyoruz
 db = SQLAlchemy(app)

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5">
+    <title>PLC Durum Ekranı</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header h1 { color: #333; }
+        .header a { text-decoration: none; background-color: #dc3545; color: white; padding: 8px 15px; border-radius: 4px; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .switch { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+        .switch:last-child { border-bottom: none; }
+        .switch-name { font-size: 1.2em; color: #555; text-transform: capitalize; }
+        .switch-status { display: flex; align-items: center; }
+        .status-light { width: 25px; height: 25px; border-radius: 50%; margin-right: 10px; }
+        .on { background-color: #28a745; box-shadow: 0 0 10px #28a745; }
+        .off { background-color: #dc3545; }
+        .status-text { font-weight: bold; font-size: 1.1em;}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>PLC Switch Durumları</h1>
+        <a href="{{ url_for('logout') }}">Çıkış Yap</a>
+    </div>
+    <div class="container">
+        {% for switch in switchler %}
+        <div class="switch">
+            <div class="switch-name">{{ switch.buton_adi }}</div>
+            <div class="switch-status">
+                {% if switch.durum %}
+                    <div class="status-light on"></div>
+                    <div class="status-text" style="color: #28a745;">AÇIK</div>
+                {% else %}
+                    <div class="status-light off"></div>
+                    <div class="status-text" style="color: #dc3545;">KAPALI</div>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <p>Görüntülenecek veri bulunamadı veya PLC'den henüz veri gelmedi.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
